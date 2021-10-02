@@ -1,74 +1,13 @@
-# Data analysis
-- Document here the project: theonering
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+# The One Ring Second Edition Helpers
 
-Please document the project the better you can.
+Web Tools to help run [The One Ring Second Edition RPG](https://freeleaguepublishing.com/en/games/the-one-ring/).
 
-# Startup the project
+The project will include:
 
-The initial setup.
+- Dice Roller
+- Character creation tool
+- Don't know yet what might be useful.
 
-Create virtualenv and install the project:
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
-```
+Development started on Oct 2nd, 2021, when I received the PDFs of the game.
+The books are in the process of being shipped to backers of the [Kickstarter campaign](https://www.kickstarter.com/projects/1192053011/the-one-ring-roleplaying-game-second-edition/description).
 
-Unittest test:
-```bash
-make clean install test
-```
-
-Check for theonering in gitlab.com/{group}.
-If your project is not set please add it:
-
-- Create a new project on `gitlab.com/{group}/theonering`
-- Then populate it:
-
-```bash
-##   e.g. if group is "{group}" and project_name is "theonering"
-git remote add origin git@github.com:{group}/theonering.git
-git push -u origin master
-git push -u origin --tags
-```
-
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-theonering-run
-```
-
-# Install
-
-Go to `https://github.com/{group}/theonering` to see the project, manage issues,
-setup you ssh public key, ...
-
-Create a python3 virtualenv and activate it:
-
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
-```
-
-Clone the project and install it:
-
-```bash
-git clone git@github.com:{group}/theonering.git
-cd theonering
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-theonering-run
-```
