@@ -6,7 +6,7 @@ import random
 class FeatDie:
     def __init__(self) -> None:
         self.face = "This die was not rolled yet, use the .roll() method."
-        self.special_result = None
+        self.special_result = ""
 
     def roll(self):
         special_faces = ["Gandalf Rune", "Sauron Eye"]
@@ -18,6 +18,7 @@ class FeatDie:
             self.special_result = f"{special_faces[0]}, automatic success!"
             self.value = 0
         if self.face == special_faces[1]:
+            self.special_result = special_faces[1]
             self.value = 0
 
     def __repr__(self):
@@ -38,7 +39,13 @@ class SuccessDie:
         return "SuccessDie()"
 
 
-def skillRoll(skill_rating=0, favoured=False, illfavoured=False):
+def skillRoll(
+    skill_rating=0,
+    favoured=False,
+    illfavoured=False,
+    miserable=False,
+    weary=False,
+):
     """Make a skill roll. Returns a tuple with (numerical_value_of_dice, special_result, degree_of_successes)"""
     # make the dice pools: 1 or 2 featDie() and as many SuccessDie() as the skill rating
     if favoured and illfavoured:
@@ -80,12 +87,20 @@ def skillRoll(skill_rating=0, favoured=False, illfavoured=False):
         kept_fd = featdice[0]
     # store its special result
     special_result = kept_fd.special_result
-    # roll the other dice. num_res starts with feat die value
+    # special case of miserable condition and Sauron Eye on kept Feat Die.
+
+    if miserable and "Sauron" in special_result:
+        special_result = f"{special_result}. Automatic failure!"
+
+    # roll the success dice. num_res starts with feat die value
     num_res = kept_fd.value
     degree_of_success = 0
     for die in pool:
         die.roll()
-        num_res += die.value
+        if not weary:
+            num_res += die.value
+        elif weary and die.value > 3:  # only add values above 3 if weary condition
+            num_res += die.value
         if die.success:
             degree_of_success += 1
 
