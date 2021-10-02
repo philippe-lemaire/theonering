@@ -38,18 +38,50 @@ class SuccessDie:
         return "SuccessDie()"
 
 
-def skillRoll(skill_rating=0):
-    # make the dice pool: 1 FeatDie() and as many SuccessDie() as the skill rating
-    featdie = FeatDie()
-    pool = [SuccessDie() for die in range(skill_rating)]
+def skillRoll(skill_rating=0, favoured=False, illfavoured=False):
+    """Make a skill roll. Returns a tuple with (numerical_value_of_dice, special_result, degree_of_successes)"""
+    # make the dice pools: 1 or 2 featDie() and as many SuccessDie() as the skill rating
+    if favoured and illfavoured:
+        featdice = [FeatDie()]
+    elif favoured or illfavoured:
+        featdice = [FeatDie(), FeatDie()]
+    else:
+        featdice = [FeatDie()]
+
+    pool = [SuccessDie() for _ in range(skill_rating)]
 
     # roll all the dice
-    # first the featdie
-    featdie.roll()
+    # first the featdies
+    for featdie in featdice:
+        featdie.roll()
+    if favoured and not illfavoured:
+        # keep the best die if favoured
+        if featdice[0].special_result:
+            kept_fd = featdice[0]
+        elif featdice[1].special_result:
+            kept_fd = featdice[1]
+        else:
+            values = [featdice[0].value, featdice[1].value]
+            max_value = max(values)
+            kept_fd = FeatDie()
+            kept_fd.value = max_value
+    elif illfavoured and not favoured:
+        # keep the wort die if illfavoured
+        if featdice[0].special_result:
+            kept_fd = featdice[1]
+        elif featdice[1].special_result:
+            kept_fd = featdice[0]
+        else:
+            values = [featdice[0].value, featdice[1].value]
+            min_value = min(values)
+            kept_fd = FeatDie()
+            kept_fd.value = min_value
+    else:  # one featdie in featdice list in the general case
+        kept_fd = featdice[0]
     # store its special result
-    special_result = featdie.special_result
+    special_result = kept_fd.special_result
     # roll the other dice. num_res starts with feat die value
-    num_res = featdie.value
+    num_res = kept_fd.value
     degree_of_success = 0
     for die in pool:
         die.roll()
